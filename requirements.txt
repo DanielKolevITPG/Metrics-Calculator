@@ -1,0 +1,5 @@
+# No external dependencies required for core functionality
+# This project is self-contained and uses only Python standard library
+
+# Optional: numpy can be installed for additional verification in tests
+# numpy>=1.21.0
