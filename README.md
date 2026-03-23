@@ -14,11 +14,16 @@ A fully functional matrix calculator implemented in Python 3.11+ with comprehens
 
 ## Installation
 
-No external dependencies required! The project uses only Python standard library.
+No external dependencies required for core operations.
+
+For the UI extras (Eigen/Random features), install the optional numpy extra.
 
 ```bash
-# Optional: Install numpy for additional verification (not required)
-pip install -r requirements.txt
+# Optional: install package in editable mode
+pip install -e .
+
+# Optional: UI extras (Eigen/Random)
+pip install -e .[ui]
 ```
 
 ## Usage
@@ -29,10 +34,22 @@ pip install -r requirements.txt
 python main.py
 ```
 
+You can also run after installation:
+
+```bash
+matrix-calculator
+```
+
 ### Running the CLI
 
 ```bash
 python main.py --cli
+```
+
+Or after installation:
+
+```bash
+matrix-calculator-cli
 ```
 
 This launches an interactive menu-driven interface with the following options:

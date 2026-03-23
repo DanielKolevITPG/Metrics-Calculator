@@ -78,7 +78,11 @@ def confirm_operation(description: str) -> bool:
 
 def pause() -> None:
     """Pause and wait for user to press Enter."""
-    input("\nPress Enter to continue...")
+    try:
+        input("\nPress Enter to continue...")
+    except EOFError:
+        # Non-interactive invocation (e.g. piping/CI) shouldn't crash.
+        return
 
 
 def run_cli() -> None:
@@ -89,7 +93,11 @@ def run_cli() -> None:
         display_menu()
 
         try:
-            choice = input("\nEnter your choice (1-8): ").strip()
+            try:
+                choice = input("\nEnter your choice (1-8): ").strip()
+            except EOFError:
+                # Non-interactive invocation: exit cleanly.
+                return
 
             if choice == "1":
                 A = input_matrix("Enter first matrix (A)")

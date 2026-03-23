@@ -180,6 +180,41 @@ class MatrixCalculatorUI:
         frame.grid(row=0, column=0, sticky="ew")
         self.actions.columnconfigure(0, weight=1)
 
+        # "Quick Compute" lets users pick an operation and hit Enter.
+        quick = ttk.Frame(frame)
+        quick.grid(row=0, column=0, columnspan=4, sticky="ew", pady=(0, 8))
+        quick.columnconfigure(1, weight=1)
+
+        ttk.Label(quick, text="Quick Compute").grid(row=0, column=0, sticky="w")
+        self.quick_var = tk.StringVar(value="A + B")
+        self.quick_combo = ttk.Combobox(
+            quick,
+            textvariable=self.quick_var,
+            values=[
+                "A + B",
+                "A - B",
+                "A x B",
+                "Scalar x A",
+                "Transpose A",
+                "Determinant A",
+                "Inverse A",
+                "Trace A",
+                "Rank A",
+                "Eigen A",
+            ],
+            state="readonly",
+        )
+        self.quick_combo.grid(row=0, column=1, sticky="ew", padx=(8, 8))
+        self.quick_run_btn = ttk.Button(quick, text="Run", command=self.run_quick)
+        self.quick_run_btn.grid(row=0, column=2, sticky="e")
+
+        quick_hint = ttk.Label(
+            quick,
+            text="Tip: press Enter on any cell to move; F5 re-runs last operation.",
+            foreground="#444444",
+        )
+        quick_hint.grid(row=1, column=0, columnspan=3, sticky="w", pady=(4, 0))
+
         buttons = [
             ("A + B", self.add),
             ("A - B", self.subtract),
@@ -199,7 +234,7 @@ class MatrixCalculatorUI:
             r = i // 4
             c = i % 4
             ttk.Button(frame, text=label, command=cmd).grid(
-                row=r, column=c, padx=4, pady=4, sticky="ew"
+                row=r + 1, column=c, padx=4, pady=4, sticky="ew"
             )
 
         for c in range(4):
@@ -207,13 +242,36 @@ class MatrixCalculatorUI:
 
         # Small workflow helpers
         helper = ttk.Frame(frame)
-        helper.grid(row=3, column=0, columnspan=4, sticky="ew", pady=(8, 0))
+        helper.grid(row=4, column=0, columnspan=4, sticky="ew", pady=(8, 0))
         ttk.Button(helper, text="Output -> A", command=self._move_output_to_A).pack(
             side="left", padx=(0, 6)
         )
         ttk.Button(helper, text="Output -> B", command=self._move_output_to_B).pack(
             side="left"
         )
+
+        # Enter in combobox runs quick op
+        self.quick_combo.bind("<Return>", lambda _e: self.run_quick())
+
+    def run_quick(self) -> None:
+        op = self.quick_var.get().strip()
+        mapping = {
+            "A + B": self.add,
+            "A - B": self.subtract,
+            "A x B": self.multiply,
+            "Scalar x A": self.scalar,
+            "Transpose A": self.transpose,
+            "Determinant A": self.det,
+            "Inverse A": self.inverse,
+            "Trace A": self.trace,
+            "Rank A": self.rank,
+            "Eigen A": self.eigen,
+        }
+        fn = mapping.get(op)
+        if fn is None:
+            self.status_var.set("Unknown operation")
+            return
+        fn()
 
     def _build_result_area(self) -> None:
         frame = ttk.LabelFrame(self.out, text="Output", padding=10)
