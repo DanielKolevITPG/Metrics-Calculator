@@ -1,6 +1,12 @@
 """Quick verification script for matrix calculator."""
 
-from matrix_operations import Matrix, parse_matrix_string
+import os
+import sys
+
+ROOT = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(ROOT, "src"))
+
+from matrix_calculator.matrix_operations import Matrix, parse_matrix_string  # type: ignore[import-not-found]
 
 print("Testing Matrix Calculator...")
 print("=" * 50)

@@ -4,10 +4,12 @@ A fully functional matrix calculator implemented in Python 3.11+ with comprehens
 
 ## Files
 
-- `matrix_operations.py` - Core matrix operations module
-- `main.py` - Menu-driven CLI interface
-- `test.py` - Comprehensive test suite (84 tests)
-- `requirements.txt` - Dependencies (none required for core functionality)
+- `src/matrix_calculator/matrix_operations.py` - Core matrix operations module
+- `src/matrix_calculator/ui.py` - Tkinter UI
+- `src/matrix_calculator/cli.py` - Menu-driven CLI interface
+- `main.py` - Workspace launcher (UI by default)
+- `tests/test_matrix_operations.py` - Comprehensive test suite
+- `requirements.txt` - Optional dependencies
 - `verify.py` - Quick verification script
 
 ## Installation
@@ -21,10 +23,16 @@ pip install -r requirements.txt
 
 ## Usage
 
-### Running the CLI
+### Running the UI (default)
 
 ```bash
 python main.py
+```
+
+### Running the CLI
+
+```bash
+python main.py --cli
 ```
 
 This launches an interactive menu-driven interface with the following options:
@@ -134,7 +142,7 @@ The program handles errors gracefully:
 ### Using unittest (standard library)
 
 ```bash
-python -m unittest test.py -v
+python -m unittest tests/test_matrix_operations.py -v
 ```
 
 Expected output:
@@ -168,7 +176,7 @@ The test suite includes:
 ### Using pytest (optional)
 
 ```bash
-pytest test.py -v
+pytest tests/test_matrix_operations.py -v
 ```
 
 ## Quick Verification
